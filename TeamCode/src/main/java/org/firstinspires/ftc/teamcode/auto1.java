@@ -111,11 +111,11 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-        encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
-        encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+        encoderDrive(DRIVE_SPEED,  48,  48, 5, 1, 1);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderDrive(TURN_SPEED,   12, -12, 4, 1, 1);  // S2: Turn Right 12 Inches with 4 Sec timeout
+        encoderDrive(DRIVE_SPEED, -24, -24, 4, 1, 1);  // S3: Reverse 24 Inches with 4 Sec timeout
 
-        robot.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
+        robot.backRightServo.setPosition(1.0);            // S4: Stop and close the claw.
         robot.rightClaw.setPosition(0.0);
         sleep(1000);     // pause for servos to move
 
@@ -132,21 +132,21 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
      *  3) Driver stops the opmode running.
      */
     public void encoderDrive(double speed,
-                             double leftInches, double rightInches,
+                             double backLeftInches, double backRightInches, double frontLeftInches, double frontRightInches
                              double timeoutS) {
         int newBackLeftTarget;
         int newBackRightTarget;
-        int newFrontLeftTarget;
         int newFrontRightTarget;
+        int newFrontLeftTarget;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newBackLeftTarget = robot.backLeftMotor.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newBackRightTarget = robot.backRightMotor.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            newFrontLeftTarget = robot.frontLeftMotor.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newFrontRightTarget = robot.frontRightDrive.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            newBackLeftTarget = robot.backLeftMotor.getCurrentPosition() + (int)(backLeftInches * COUNTS_PER_INCH);
+            newBackRightTarget = robot.backRightMotor.getCurrentPosition() + (int)(backRightInches * COUNTS_PER_INCH);
+            newFrontLeftTarget = robot.frontLeftMotor.getCurrentPosition() + (int)(frontLeftInches * COUNTS_PER_INCH);
+            newFrontRightTarget = robot.frontRightDrive.getCurrentPosition() + (int)(frontRightInches * COUNTS_PER_INCH);
 
             // Turn On RUN_TO_POSITION
             robot.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
